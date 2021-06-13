@@ -6,21 +6,31 @@ using Random = UnityEngine.Random;
 
 public class Food : MonoBehaviour
 {
-    private BoxCollider2D _gridArea;
+    public int totalFoodCount;
+    private int currentFoodCount;
 
     private void Start()
     {
-        _gridArea = GameObject.Find("GridArea").GetComponent<BoxCollider2D>();
-        RandomizePlacement();
+        currentFoodCount = totalFoodCount;
     }
 
-    public void RandomizePlacement()
+    private void Update()
     {
-        Bounds bounds = _gridArea.bounds;
+        if (currentFoodCount <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 
-        float x = Random.Range(bounds.min.x, bounds.max.x);
-        float y = Random.Range(bounds.min.y, bounds.max.y);
-
-        transform.position = new Vector3(Mathf.Round(x), Mathf.Round(y), 0);
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Ants") || other.CompareTag("Player"))
+        {
+            if (other.GetComponent<AntCarry>().isCarryFood)
+                return;
+            
+            other.GetComponent<AntCarry>().CarryFood();
+            currentFoodCount--;
+        }
     }
 }

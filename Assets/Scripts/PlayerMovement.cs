@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -23,13 +24,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            ResetState();
+            Restart();
         }
-        
+
+        //Player Moves
         _segments[0].position = Vector3.MoveTowards(
             _segments[0].position, 
             playerMovePoint.position, 
             moveSpeed * Time.deltaTime);
+        //Segment Moves
         for (int i = 1; i < _segments.Count; i++)
         {
             _segments[i].position = Vector3.MoveTowards(
@@ -37,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
                 _segmentMovePoint[i - 1].position,
                 moveSpeed * Time.deltaTime);
         }
-
+        //When player has reached the move point
         if (Vector3.Distance(transform.position, playerMovePoint.position) <= 0.05)
         {
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
@@ -72,12 +75,6 @@ public class PlayerMovement : MonoBehaviour
         {
             _segmentMovePoint[i].position = _previousMovePoint[i].position;
         }
-    }
-    
-    private void FixedUpdate()
-    {
-        //Segments move to the next move point
-        
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -124,5 +121,10 @@ public class PlayerMovement : MonoBehaviour
         
         playerMovePoint.parent = null;
         _previousMovePoint[0].parent = null;
+    }
+
+    private void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
