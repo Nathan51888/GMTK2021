@@ -2,16 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed;
+    public Transform spawnPoint;
     public Transform playerMovePoint;
     public Transform playerPreviousMovePoint;
     private List<Transform> _previousMovePoint = new List<Transform>();
     private List<Transform> _segmentMovePoint = new List<Transform>();
     private List<Transform> _segments = new List<Transform>();
+    private Vector3 _playerAxis = new Vector3(0,0,0);
     
     public Transform segmentsPrefab;
     public LayerMask whatStopsMovement;
@@ -24,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            Restart();
+            GameManager.Instance.Respawn();
         }
 
         //Player Moves
@@ -40,23 +41,36 @@ public class PlayerMovement : MonoBehaviour
                 _segmentMovePoint[i - 1].position,
                 moveSpeed * Time.deltaTime);
         }
+        
         //When player has reached the move point
         if (Vector3.Distance(transform.position, playerMovePoint.position) <= 0.05)
         {
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
             {
-                if (!Physics2D.OverlapCircle(playerMovePoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0), .2f, whatStopsMovement))
+                if (!Physics2D.OverlapCircle(
+                    playerMovePoint.position + new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0), 
+                    .2f, whatStopsMovement))
                 {
-                    SetSegmentMovePoint();
-                    playerMovePoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
+                    if (Math.Abs(playerMovePoint.position.x + Input.GetAxisRaw("Horizontal") - 
+                                 _previousMovePoint[0].position.x) > 0 || _segments.Count == 1)
+                    {
+                        SetSegmentMovePoint();
+                        playerMovePoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
+                    }
                 }
             }
             else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
             {
-                if (!Physics2D.OverlapCircle(playerMovePoint.position + new Vector3(0, Input.GetAxisRaw("Vertical"), 0), .2f, whatStopsMovement))
+                if (!Physics2D.OverlapCircle(
+                    playerMovePoint.position + new Vector3(0, Input.GetAxisRaw("Vertical"), 0), 
+                    .2f, whatStopsMovement))
                 {
-                    SetSegmentMovePoint();
-                    playerMovePoint.position += new Vector3(0, Input.GetAxisRaw("Vertical"), 0);
+                    if (Math.Abs(playerMovePoint.position.y + Input.GetAxisRaw("Vertical") -
+                                 _previousMovePoint[0].position.y) > 0 || _segments.Count == 1)
+                    {
+                        SetSegmentMovePoint();
+                        playerMovePoint.position += new Vector3(0, Input.GetAxisRaw("Vertical"), 0);
+                    }
                 }            
             }
         }
@@ -98,14 +112,14 @@ public class PlayerMovement : MonoBehaviour
         _segments.Add(ant);
         _segmentMovePoint.Add(ant.Find("MovePoint"));
         _previousMovePoint.Add(ant.Find("PreviousMovePoint"));
-        
+        _segments[_segments.Count - 1].gameObject.layer = 3;
         _segmentMovePoint[_segmentMovePoint.Count - 1].parent = null;
         _previousMovePoint[_segments.Count - 1].parent = null;
     }
     
     private void ResetState()
     {
-        transform.position = Vector3.zero;
+        transform.position = spawnPoint.position;
 
         for (int i = 1; i < _segments.Count; i++)
         {
@@ -121,10 +135,5 @@ public class PlayerMovement : MonoBehaviour
         
         playerMovePoint.parent = null;
         _previousMovePoint[0].parent = null;
-    }
-
-    private void Restart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

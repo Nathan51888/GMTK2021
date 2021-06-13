@@ -1,28 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Food : MonoBehaviour
 {
     public int totalFoodCount;
-    private int currentFoodCount;
+    private TextMeshPro _foodCountText;
+    private int _currentFoodCount;
 
     private void Start()
     {
-        currentFoodCount = totalFoodCount;
+        _currentFoodCount = totalFoodCount;
+        _foodCountText = GetComponentInChildren<TextMeshPro>();
+        _foodCountText.text = _currentFoodCount.ToString();
     }
-
-    private void Update()
-    {
-        if (currentFoodCount <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
+    
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Ants") || other.CompareTag("Player"))
         {
@@ -30,7 +25,13 @@ public class Food : MonoBehaviour
                 return;
             
             other.GetComponent<AntCarry>().CarryFood();
-            currentFoodCount--;
+            _currentFoodCount--;
+            _foodCountText.text = _currentFoodCount.ToString();
+            
+            if (_currentFoodCount <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
