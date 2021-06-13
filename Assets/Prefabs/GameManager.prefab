@@ -43,6 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9cbcc9d084d4c6ca3d3f5a9c66b8a6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalLevelCount: 1
+  totalLevelCount: 7
   currentLevel: 0
   deathCount: 0

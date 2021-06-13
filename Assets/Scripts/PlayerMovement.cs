@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -13,7 +14,9 @@ public class PlayerMovement : MonoBehaviour
     private List<Transform> _segmentMovePoint = new List<Transform>();
     private List<Transform> _segments = new List<Transform>();
     private Vector3 _playerAxis = new Vector3(0,0,0);
-    
+    public float _soundCooldown = 0.3f;
+    private float _soundCooldownCurrent;
+
     public Transform segmentsPrefab;
     public LayerMask whatStopsMovement;
     private void Start()
@@ -23,6 +26,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (_soundCooldown > 0)
+        {
+            _soundCooldownCurrent -= Time.deltaTime;
+        }
+
         if (Input.GetButtonDown("Cancel"))
         {
             GameManager.Instance.Respawn();
@@ -39,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
             _segments[i].position = Vector3.MoveTowards(
                 _segments[i].position,
                 _segmentMovePoint[i - 1].position,
-                moveSpeed * Time.deltaTime);
+                10 * Time.deltaTime);
         }
         
         //When player has reached the move point
@@ -56,7 +64,18 @@ public class PlayerMovement : MonoBehaviour
                     {
                         SetSegmentMovePoint();
                         playerMovePoint.position += new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
+                        AudioManager.Instance.Play("Move");
                     }
+                    else if (_soundCooldownCurrent <= 0)
+                    {
+                        AudioManager.Instance.Play("Bump");
+                        _soundCooldownCurrent = _soundCooldown;
+                    }
+                }
+                else if (_soundCooldownCurrent <= 0)
+                {
+                    AudioManager.Instance.Play("Bump");
+                    _soundCooldownCurrent = _soundCooldown;
                 }
             }
             else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
@@ -70,8 +89,19 @@ public class PlayerMovement : MonoBehaviour
                     {
                         SetSegmentMovePoint();
                         playerMovePoint.position += new Vector3(0, Input.GetAxisRaw("Vertical"), 0);
+                        AudioManager.Instance.Play("Move");
                     }
-                }            
+                    else if (_soundCooldownCurrent <= 0)
+                    {
+                        AudioManager.Instance.Play("Bump");
+                        _soundCooldownCurrent = _soundCooldown;
+                    }
+                }    
+                else if (_soundCooldownCurrent <= 0)
+                {
+                    AudioManager.Instance.Play("Bump");
+                    _soundCooldownCurrent = _soundCooldown;
+                }
             }
         }
     }
@@ -107,6 +137,7 @@ public class PlayerMovement : MonoBehaviour
     private void Grow(Transform ant)
     {
         Debug.Log("Plus one ant");
+        AudioManager.Instance.Play("Win");
         ant.position = playerPreviousMovePoint.position;
         
         _segments.Add(ant);

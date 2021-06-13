@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Food
   - Obstacle
+  - Ants
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - StopMovement
   - Water
   - UI
   - 

@@ -16,10 +16,12 @@ public class Base : MonoBehaviour
             {
                 Debug.Log("Level Completed");
                 GameManager.Instance.LoadScene(GameManager.GameScenes.Level);
+                AudioManager.Instance.Play("Win");
             }
             else
             {
                 Debug.Log("Need More Food!");
+                AudioManager.Instance.Play("Bump");
             }
         }
     }

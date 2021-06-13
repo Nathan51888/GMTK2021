@@ -11,6 +11,7 @@ public class AntCarry : MonoBehaviour
     public void CarryFood()
     {
         Debug.Log(gameObject.name + "Carry food");
+        AudioManager.Instance.Play("Eat");
         isCarryFood = true;
         foodSprite.enabled = true;
     }
