@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db3e2c6b80dd0887da00ef310201b6e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
+  moveSpeed: 5
   spawnPoint: {fileID: 0}
   playerMovePoint: {fileID: 1327830457}
   playerPreviousMovePoint: {fileID: 5880549974436710910}

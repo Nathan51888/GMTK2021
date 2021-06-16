@@ -106,6 +106,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public bool IsInventoryFull()
+    {
+        bool isFull = false;
+        foreach (var iSegment in _segments)
+        {
+            isFull = iSegment.GetComponentInChildren<AntCarry>().isCarryFood;
+        }
+
+        return isFull;
+    }
+    
+    public bool CanMove()
+    {
+        return true;
+    }
+    
     private void SetSegmentMovePoint()
     {
         //When player sets new move point
