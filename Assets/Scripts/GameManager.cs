@@ -18,6 +18,7 @@ public class GameManager : GenericSingleton<GameManager>
     public int totalLevelCount;
     public int currentLevel;
     public int deathCount;
+    public int totalFoodCount;
     private Action _onLoaderCallback;
     private AsyncOperation _loadingAsyncOperation;
 
@@ -29,6 +30,7 @@ public class GameManager : GenericSingleton<GameManager>
     public void Respawn()
     {
         deathCount++;
+        totalFoodCount = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -65,14 +67,17 @@ public class GameManager : GenericSingleton<GameManager>
             {
                 case GameScenes.Menu:
                     currentLevel = 0;
+                    totalFoodCount = 0;
                     StartCoroutine(LoadSceneAsync(GameScenes.Menu));
                     return;
 
                 case GameScenes.Level:
                     currentLevel += 1;
+                    totalFoodCount = 0;
                     if (currentLevel >= totalLevelCount + 1)
                     {
                         currentLevel = 0;
+                        totalFoodCount = 0;
                         StartCoroutine(LoadSceneAsync(GameScenes.Menu));
                         return;
                     }
@@ -82,6 +87,7 @@ public class GameManager : GenericSingleton<GameManager>
 
                 case GameScenes.Start:
                     currentLevel = 1;
+                    totalFoodCount = 0;
                     StartCoroutine(LoadSceneAsync(GameScenes.Level, currentLevel));
                     return;
             }

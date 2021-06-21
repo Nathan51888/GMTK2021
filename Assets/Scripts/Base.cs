@@ -29,7 +29,7 @@ public class Base : MonoBehaviour
         {
             //Check if player has enough food
             //If so then go to next level
-            if (FindObjectOfType<Food>() == null)
+            if (GameManager.Instance.totalFoodCount <= 0)
             {
                 Debug.Log("Level Completed");
                 AudioManager.Instance.Play("Win");
