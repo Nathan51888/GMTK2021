@@ -350,6 +350,7 @@
 "Assets/Scripts/GenericSingleton.cs"
 "Assets/Scripts/LoaderCallback.cs"
 "Assets/Scripts/LoadingProgressBar.cs"
+"Assets/Scripts/MenuButton.cs"
 "Assets/Scripts/PlayerMovement.cs"
 "Assets/Scripts/Sound.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"

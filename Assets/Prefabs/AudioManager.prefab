@@ -47,7 +47,7 @@ MonoBehaviour:
   sounds:
   - name: Music
     clip: {fileID: 8300000, guid: fa6cb5939c2a8c4b383eff09af6fa116, type: 3}
-    volume: 0.5
+    volume: 0.3
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Win
     clip: {fileID: 8300000, guid: bbcc712d4cf108da8a23d8441e73fdb2, type: 3}
-    volume: 0.3
+    volume: 0.1
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Eat
     clip: {fileID: 8300000, guid: 9bc63a557ad38a2f2b2c158227aee948, type: 3}
-    volume: 0.7
+    volume: 0.5
     volumeVariance: 0
     pitch: 1
     pitchVariance: 0

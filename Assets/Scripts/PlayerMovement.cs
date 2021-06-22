@@ -37,10 +37,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Player Moves
-        _segments[0].position = Vector3.MoveTowards(
+        _segments[0].position = Vector3.Lerp(
             _segments[0].position, 
             playerMovePoint.position, 
-            moveSpeed * Time.deltaTime);
+            Mathf.SmoothStep(0, 1, Mathf.SmoothStep(0, 1, .4f)));
         //Segment Moves
         for (int i = 1; i < _segments.Count; i++)
         {
