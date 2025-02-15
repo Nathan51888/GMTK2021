@@ -1,7 +1,10 @@
 # Ants - GMTK2021
 A game created for the GMTK Game Jam 2021 hosted on itch.io
 
-https://nathan51888.itch.io/ants
+**Link**: https://nathan51888.itch.io/ants
+
+### Known issues
+- Movement is much faster on faster computers since it was developed on a slower laptop and the game logic was depended on the framerate of the game running
 
 ![JamScreenshot05](https://github.com/user-attachments/assets/b11d6037-2271-45a6-acf0-25fffdf2fbdf)
 ![JamScreenshot04](https://github.com/user-attachments/assets/dc1350b2-f2d5-49c4-834c-5cc368e245b2)
